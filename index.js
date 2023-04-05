@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
 function bubbleSort(arr) {
-    //数组的长度
     let len = arr.length;
     for (let i = 0; i < len - 1; i++) {
-        //相邻的数进行比较
         let isOk = true;
         for (let j = 0; j < len - 1 - i; j++) {
             if (arr[j] > arr[j + 1]) {
@@ -25,7 +23,6 @@ function selectionSort(arr) {
     let minIndex, temp;
     let len = arr.length;
     for (let i = 0; i < len - 1; i++) {
-        //最小的数的下标
         minIndex = i;
         for (let j = i + 1; j < len; j++) {
             if (arr[j] < arr[minIndex]) {
@@ -49,7 +46,6 @@ function insertionSort(arr) {
             arr[preIndex + 1] = arr[preIndex];
             preIndex--;
         }
-        //当前值的插入位置
         arr[preIndex + 1] = current;
     }
     return arr;
@@ -58,7 +54,6 @@ function insertionSort(arr) {
 //递归
 function quickSort1(arr) {
     if (arr.length <= 1) return arr;
-    //向下取值取中间值下标
     let pivotIndex = Math.floor(arr.length / 2);
     let pivot = arr.splice(pivotIndex, 1)[0];
     let left = [], right = [];
@@ -69,7 +64,6 @@ function quickSort1(arr) {
             right.push(arr[i]);
         }
     }
-    //左右两边加中间数合并数组
     return quickSort1(left).concat([pivot], quickSort1(right));
 }
 
@@ -98,7 +92,6 @@ function quickSort(arr) {
     }
 }
 
-//建一个大顶堆
 function buildMaxHeap(arr) {
     let mid = Math.floor(arr.length / 2);
     for (let i = mid; i <= 0; i--) {
@@ -106,7 +99,6 @@ function buildMaxHeap(arr) {
     }
 }
 
-//调整堆
 function heapify(arr, i) {
     let left = 2 * i + 1,
         right = 2 * i + 2,
@@ -124,14 +116,12 @@ function heapify(arr, i) {
     }
 }
 
-//交换两个数
 function swap(arr, i, par) {
     let temp = arr[i];
     arr [i] = arr[par];
     arr[par] = temp;
 }
 
-//分组排序
 function merge(left, right) {
     let result = [];
     while (left.length > 0 && right.length > 0) {
@@ -147,7 +137,6 @@ function merge(left, right) {
 function mergeSort(arr) {
     if (arr.length <= 1) return arr;
     let mid = Math.floor(arr.length / 2);
-    //分组
     let leftArr = arr.slice(0, mid), rightArr = arr.slice(mid);
     return merge(mergeSort(leftArr), mergeSort(rightArr));
 }
