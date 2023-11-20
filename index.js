@@ -141,5 +141,87 @@ function mergeSort(arr) {
     return merge(mergeSort(leftArr), mergeSort(rightArr));
 }
 
-let arr = [9, 3, 5, 10, -3];
-console.log(mergeSort(arr));
+var generateParenthesis = function (n) {
+    const res = [];
+    const backTracing = (lRemain, rRemain, str) => { // 左右括号所剩的数量，str是当前构建的字符串
+        if (str.length == 2 * n) { // 字符串构建完成
+            res.push(str);           // 加入解集
+            return;                  // 结束当前递归分支
+        }
+        if (lRemain > 0) {         // 只要左括号有剩，就可以选它，然后继续做选择（递归）
+            backTracing(lRemain - 1, rRemain, str + "(");
+        }
+        if (lRemain < rRemain) {   // 右括号比左括号剩的多，才能选右括号
+            backTracing(lRemain, rRemain - 1, str + ")"); // 然后继续做选择（递归）
+        }
+    };
+    backTracing(n, n, ""); // 递归的入口，剩余数量都是n，初始字符串是空串
+    return res;
+}
+var permute = function (nums) {
+    if (!nums.length) return
+    let res = []
+    let backTrack = path => {
+        //长度满足条件，加入结果
+        if (path.length === nums.length) {
+            res.push(path)
+            return
+        }
+        nums.forEach(item => {
+            if (path.includes(item)) return //不包含重复的数字
+            backTrack([...path, item]) //加入路径，继续递归选择
+        });
+    }
+    backTrack([])
+    return res
+}
+
+var totalNQueens = function (n) {
+    let count = 0; //皇后可放置的总数
+    let isValid = (row, col, board, n) => {
+        //所在行不用判断，每次都会下移一行
+        //判断同一列的数据是否包含
+        for (let i = 0; i < row; i++) {
+            if (board[i][col] === 'Q') {
+                return false
+            }
+        }
+        //判断45度对角线是否包含
+        for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] === 'Q') {
+                return false
+            }
+        }
+        //判断135度对角线是否包含
+        for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; j--, i--) {
+            if (board[i][j] === 'Q') {
+                return false
+            }
+        }
+        return true
+    }
+
+    let backTracing = (row, board) => {
+        //走到最后一行，统计次数
+        if (row === n) {
+            count++;
+            return
+        }
+
+        for (let x = 0; x < n; x++) {
+            //判断该位置是否可以放置 皇后
+            if (isValid(row, x, board, n)) {
+                board[row][x] = 'Q'; //放置皇后
+                backTracing(row + 1, board); //递归
+                board[row][x] = '.'; //回溯，撤销处理结果
+            }
+        }
+    }
+    let board = [...Array(n)].map(v => v = ([...Array(n)]).fill('.')) //棋盘
+    console.log(board)
+    backTracing(0, board)
+    return count
+};
+
+res = totalNQueens(10)
+console.log(res)
