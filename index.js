@@ -118,7 +118,7 @@ function heapify(arr, i) {
 
 function swap(arr, i, par) {
     let temp = arr[i];
-    arr [i] = arr[par];
+    arr[i] = arr[par];
     arr[par] = temp;
 }
 
@@ -223,5 +223,41 @@ var totalNQueens = function (n) {
     return count
 };
 
-res = totalNQueens(10)
-console.log(res)
+const subsets = (nums) => {
+    const res = [];
+    const backTracing = (index, list) => {
+        res.push(list.slice());                     // 调用子递归前，加入解集
+        for (let i = index; i < nums.length; i++) { // 枚举出所有可选的数
+            list.push(nums[i]);                     // 选这个数
+            backTracing(i + 1, list);               // 基于选这个数，继续递归
+            list.pop();                             // 撤销选这个数
+        }
+    };
+    backTracing(0, []);
+    return res;
+};
+
+var combine = function (n, k) {
+    let result = [];
+    let backTracing = (start, path) => {
+        // 如果已经选满了的话，加入结果集中
+        if (path.length == k) {
+            result.push(path.slice());
+            return;
+        }
+        // 从开始的数字到末尾的数字
+        for (let i = start; i <= n; i++) {
+            // 加入选择列表中
+            path.push(i);
+            // 继续深度搜索
+            backTracing(i + 1, path);
+            // 撤销选择
+            path.pop(i);
+        }
+    };
+    backTracing(1, []);
+    return result;
+};
+
+res = combine(12, 10)
+console.log(res);
