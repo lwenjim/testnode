@@ -214,11 +214,19 @@ var totalNQueens = function (n) {
                 board[row][x] = 'Q'; //放置皇后
                 backTracing(row + 1, board); //递归
                 board[row][x] = '.'; //回溯，撤销处理结果
+                show()
             }
         }
     }
     let board = [...Array(n)].map(v => v = ([...Array(n)]).fill('.')) //棋盘
-    console.log(board)
+    let show = () => {
+        for (let prop in object) {
+            for (let p in prop) {
+                console.log(prop[p])
+            }
+            console.log("\n")
+        }
+    }
     backTracing(0, board)
     return count
 };
@@ -259,5 +267,51 @@ var combine = function (n, k) {
     return result;
 };
 
-res = combine(12, 10)
-console.log(res);
+var combinationSum2 = function (candidates, target) {
+    candidates.sort((a,b)=>a-b)
+    console.log(candidates)
+    let ans = [];
+    let backTracing = (start, path, sum) => {
+        if (sum >= target) {
+            if (sum === target) {
+                ans.push(path.slice())
+            }
+            return
+        }
+        for (let i = start; i < candidates.length; i++) {
+            if (i - 1 >= start && candidates[i - 1] == candidates[i]) {
+                continue;
+            }
+            path.push(candidates[i])
+            backTracing(i + 1, path, sum + candidates[i])
+            path.pop()
+        }
+    }
+    backTracing(0, [], 0)
+    return ans
+};
+var permuteUnique = function (nums) {
+    let ans = [];
+    let used = Array(nums.length).fill(false)
+    let backTracing = (start, path) => {
+        if (start === nums.length) {
+            ans.push(path.slice())
+            return
+        }
+        for (let i = 0; i < nums.length; ++i) {
+            if (used[i] || (i > 0 && nums[i] === nums[i - 1] && !used[i - 1])) {
+                continue;
+            }
+            path.push(nums[i])
+            used[i] = true
+            backTracing(start + 1, path)
+            used[i] = false
+            path.pop()
+        }
+    }
+    nums.sort((a, b) => a - b)
+    backTracing(0, [])
+    return ans
+ };
+res = permuteUnique([1,2,3])
+console.log(res)
